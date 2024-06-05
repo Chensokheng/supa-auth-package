@@ -1,6 +1,6 @@
 {
-	"name": "supa-auth",
-	"version": "0.0.2",
+	"name": "supaauth",
+	"version": "0.0.3",
 	"description": "",
 	"main": "index.js",
 	"repository": {
