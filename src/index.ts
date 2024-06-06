@@ -13,7 +13,7 @@ if (args[0] === "add") {
 		// fetch file data from github
 
 		const url =
-			"https://raw.githubusercontent.com/Chensokheng/next-supabase-vote/master/components/Footer.tsx"; // Replace with your URL
+			"https://raw.githubusercontent.com/Chensokheng/supa-auth/master/components/auth/signup.tsx"; // Replace with your URL
 
 		https
 			.get(url, (response) => {
