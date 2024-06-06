@@ -32,7 +32,7 @@ if (args[0] === "add") {
     if (component === "signup") {
         // create signup file
         // fetch file data from github
-        var url = "https://raw.githubusercontent.com/Chensokheng/next-supabase-vote/master/components/Footer.tsx"; // Replace with your URL
+        var url = "https://raw.githubusercontent.com/Chensokheng/supa-auth/master/components/auth/signup.tsx"; // Replace with your URL
         https
             .get(url, function (response) {
             var data = "";
