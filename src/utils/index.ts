@@ -44,10 +44,10 @@ export function initSupabase() {
 		!fs.existsSync("./lib/supabase")
 	) {
 		if (fs.existsSync("./src")) {
-			fs.mkdirSync("./src/lib/supabase");
+			fs.mkdirSync("./src/lib/supabase", { recursive: true });
 			path = "./src/lib/supabase";
 		} else {
-			fs.mkdirSync("./lib/supabase");
+			fs.mkdirSync("./lib/supabase", { recursive: true });
 			path = "./lib/supabase";
 		}
 	}

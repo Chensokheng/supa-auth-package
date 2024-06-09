@@ -15,9 +15,9 @@ program
 
 		if (!fs.existsSync("./src/supaauth") && !fs.existsSync("./supaauth")) {
 			if (fs.existsSync("./src")) {
-				fs.mkdirSync("./src/supaauth");
+				fs.mkdirSync("./src/supaauth", { recursive: true });
 			} else {
-				fs.mkdirSync("./supaauth");
+				fs.mkdirSync("./supaauth", { recursive: true });
 			}
 		}
 
