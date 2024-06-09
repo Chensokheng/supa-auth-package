@@ -1,40 +1,26 @@
 #!/usr/bin/env node
 
-const args = process.argv.slice(2);
 import * as fs from "fs";
-import * as https from "https";
+
+import { createComponent } from "./utils";
+const args = process.argv.slice(2);
+
+if (args[0] === "init") {
+	if (fs.existsSync("./src/supaauth") || fs.existsSync("./src/supaauth")) {
+		process.exit(1);
+	}
+	if (fs.existsSync("./src")) {
+		fs.mkdirSync("./src/supaauth");
+	} else {
+		fs.mkdirSync("./supaauth");
+	}
+}
 
 if (args[0] === "add") {
 	const component = args[1];
-
 	if (component === "signup") {
-		// create signup file
-
-		// fetch file data from github
-
 		const url =
-			"https://raw.githubusercontent.com/Chensokheng/supa-auth/master/components/auth/signup.tsx"; // Replace with your URL
-
-		https
-			.get(url, (response) => {
-				let data = "";
-
-				response.on("data", (chunk) => {
-					data += chunk;
-				});
-
-				response.on("end", () => {
-					fs.writeFile("signup.tsx", data, (err) => {
-						if (err) {
-							console.error("Error writing to file:", err);
-						} else {
-							console.log("Data written to file successfully.");
-						}
-					});
-				});
-			})
-			.on("error", (err) => {
-				console.error("Error fetching data from URL:", err);
-			});
+			"https://raw.githubusercontent.com/Chensokheng/next-supabase-vote/master/components/Footer.tsx";
+		createComponent(component, url);
 	}
 }
