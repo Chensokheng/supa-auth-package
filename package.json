@@ -1,6 +1,6 @@
 {
 	"name": "supaauth",
-	"version": "0.0.7",
+	"version": "0.0.8",
 	"description": "",
 	"main": "index.js",
 	"repository": {
@@ -18,5 +18,8 @@
 	"devDependencies": {
 		"@types/node": "^20.14.1",
 		"typescript": "^5.4.5"
+	},
+	"dependencies": {
+		"commander": "^12.1.0"
 	}
 }

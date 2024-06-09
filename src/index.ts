@@ -1,26 +1,75 @@
 #!/usr/bin/env node
 
 import * as fs from "fs";
+import { spawn } from "child_process";
 
-import { createComponent } from "./utils";
-const args = process.argv.slice(2);
+import { getWriteComponentPath, initSupabase, writeFile } from "./utils";
 
-if (args[0] === "init") {
-	if (fs.existsSync("./src/supaauth") || fs.existsSync("./src/supaauth")) {
-		process.exit(1);
-	}
-	if (fs.existsSync("./src")) {
-		fs.mkdirSync("./src/supaauth");
-	} else {
-		fs.mkdirSync("./supaauth");
-	}
-}
+import { program } from "commander";
 
-if (args[0] === "add") {
-	const component = args[1];
-	if (component === "signup") {
-		const url =
-			"https://raw.githubusercontent.com/Chensokheng/supa-auth/master/components/auth/signup.tsx";
-		createComponent(component, url);
-	}
-}
+program
+	.command("init")
+	.option("--skip <type>", "Skip a specific step")
+	.action(async (options) => {
+		console.log("1. Init supaauth");
+
+		if (!fs.existsSync("./src/supaauth") && !fs.existsSync("./supaauth")) {
+			if (fs.existsSync("./src")) {
+				fs.mkdirSync("./src/supaauth");
+			} else {
+				fs.mkdirSync("./supaauth");
+			}
+		}
+
+		if (options.skip === "shadcn") {
+			initSupabase();
+		} else {
+			console.log("Init Shadcn");
+			const child = spawn("npx shadcn-ui@latest init", {
+				stdio: "inherit",
+				shell: true,
+			});
+
+			// Handle child process exit
+			child.on("close", (code) => {
+				initSupabase();
+			});
+		}
+	});
+
+program
+	.command("add")
+	.option("--component <type>", "Component")
+	.option("--skip <type>", "Skip")
+	.action(async (options) => {
+		if (options.component === "signup") {
+			// create file
+			console.log("Creating supaauth/signup.tsx file..");
+			writeFile(
+				"create signup",
+				"https://raw.githubusercontent.com/Chensokheng/supa-auth/master/components/auth/signup.tsx",
+				getWriteComponentPath(options.component)
+			);
+			if (!(options.skip === "dep")) {
+				console.log("Installing dependencies...");
+				console.log("Installing form..");
+				const child = spawn(
+					"npx shadcn-ui@latest add form && npx shadcn-ui@latest add input",
+					{
+						stdio: "inherit",
+						shell: true,
+					}
+				);
+				// Handle child process exit
+				child.on("close", (code) => {
+					console.log("Installing React Icons");
+					spawn("npm i react-icons", {
+						stdio: "inherit",
+						shell: true,
+					});
+				});
+			}
+		}
+	});
+
+program.parse(process.argv);
