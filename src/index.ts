@@ -20,7 +20,7 @@ if (args[0] === "add") {
 	const component = args[1];
 	if (component === "signup") {
 		const url =
-			"https://raw.githubusercontent.com/Chensokheng/next-supabase-vote/master/components/Footer.tsx";
+			"https://raw.githubusercontent.com/Chensokheng/supa-auth/master/components/auth/signup.tsx";
 		createComponent(component, url);
 	}
 }
