@@ -48,7 +48,7 @@ export function initSupabase() {
 			path = "./src/lib/supabase";
 		} else {
 			fs.mkdirSync("./lib/supabase");
-			path = "./lib/";
+			path = "./lib/supabase";
 		}
 	}
 
