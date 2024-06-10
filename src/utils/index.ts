@@ -6,9 +6,9 @@ export function getWriteComponentPath(component: string) {
 	const path = "./src";
 
 	if (fs.existsSync(path)) {
-		return "./src/supaauth/" + component + ".tsx";
+		return "./src/components/supaauth/" + component + ".tsx";
 	} else {
-		return "./supaauth/" + component + ".tsx";
+		return "./components/supaauth/" + component + ".tsx";
 	}
 }
 

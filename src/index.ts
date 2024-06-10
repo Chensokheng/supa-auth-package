@@ -12,12 +12,15 @@ program
 	.option("--skip <type>", "Skip a specific step")
 	.action(async (options) => {
 		console.log("1. Init supaauth");
-
-		if (!fs.existsSync("./src/supaauth") && !fs.existsSync("./supaauth")) {
+		const supaAuthFolder = "components/supaauth";
+		if (
+			!fs.existsSync("./src/" + supaAuthFolder) &&
+			!fs.existsSync("./" + supaAuthFolder)
+		) {
 			if (fs.existsSync("./src")) {
-				fs.mkdirSync("./src/supaauth", { recursive: true });
+				fs.mkdirSync("./src/" + supaAuthFolder, { recursive: true });
 			} else {
-				fs.mkdirSync("./supaauth", { recursive: true });
+				fs.mkdirSync("./" + supaAuthFolder, { recursive: true });
 			}
 		}
 
