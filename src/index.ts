@@ -3,7 +3,12 @@
 import * as fs from "fs";
 import { spawn } from "child_process";
 
-import { getWriteComponentPath, initSupabase, writeFile } from "./utils";
+import {
+	createFolderAndFile,
+	getWriteComponentPath,
+	initSupabase,
+	writeFile,
+} from "./utils";
 
 import { program } from "commander";
 
@@ -45,33 +50,83 @@ program
 	.option("--component <type>", "Component")
 	.option("--skip <type>", "Skip")
 	.action(async (options) => {
-		if (options.component === "signup") {
+		if (options.component === "register") {
 			// create file
-			console.log("Creating supaauth/signup.tsx file..");
+			console.log("creating register.tsx..");
+			writeFile(
+				"create regiser",
+				"https://raw.githubusercontent.com/Chensokheng/supa-auth/master/components/auth/register.tsx",
+				getWriteComponentPath("register")
+			);
+			console.log("creating signup.tsx..");
+
 			writeFile(
 				"create signup",
 				"https://raw.githubusercontent.com/Chensokheng/supa-auth/master/components/auth/signup.tsx",
-				getWriteComponentPath(options.component)
+				getWriteComponentPath("signup")
+			);
+			console.log("creating social.tsx..");
+			writeFile(
+				"create social",
+				"https://raw.githubusercontent.com/Chensokheng/supa-auth/master/components/auth/social.tsx",
+				getWriteComponentPath("social")
+			);
+			console.log("creating middlware.tsx..");
+			writeFile(
+				"middleware",
+				"https://raw.githubusercontent.com/Chensokheng/supa-auth/master/middleware.tsx",
+				"./middleware.ts"
+			);
+			console.log("creating signup api ...");
+			createFolderAndFile(
+				"https://raw.githubusercontent.com/Chensokheng/supa-auth/master/app/api/signup/route.ts",
+				"app/api/signup",
+				"route.ts"
+			);
+			console.log("creating auth callback ...");
+			createFolderAndFile(
+				"https://raw.githubusercontent.com/Chensokheng/supa-auth/master/app/auth/callback/route.ts",
+				"app/auth/callback",
+				"route.ts"
+			);
+			console.log("creating email template ...");
+			createFolderAndFile(
+				"https://raw.githubusercontent.com/Chensokheng/supa-auth/master/emails/index.tsx",
+				"./emails",
+				"index.tsx",
+				true
+			);
+			console.log("creating auth actions ...");
+
+			createFolderAndFile(
+				"https://raw.githubusercontent.com/Chensokheng/supa-auth/master/actions/auth.ts",
+				"actions",
+				"auth.ts"
 			);
 			if (!(options.skip === "dep")) {
 				console.log("Installing dependencies...");
-				console.log("Installing form..");
+				console.log(
+					"npx shadcn-ui@latest add input-otp\nnpx shadcn-ui@latest add form\nnpx shadcn-ui@latest add input\nnpm i react-icons resend sonner\nnpm install react-email @react-email/components -E"
+				);
 				const child = spawn(
-					"npx shadcn-ui@latest add form && npx shadcn-ui@latest add input",
+					"npx shadcn-ui@latest add input-otp && npx shadcn-ui@latest add form && npx shadcn-ui@latest add input && npm i react-icons resend sonner && npm install react-email @react-email/components -E",
 					{
 						stdio: "inherit",
 						shell: true,
 					}
 				);
 				// Handle child process exit
-				child.on("close", (code) => {
-					console.log("Installing React Icons");
-					spawn("npm i react-icons", {
-						stdio: "inherit",
-						shell: true,
-					});
-				});
+				child.on("close", (code) => {});
 			}
+		} else if (options.component === "signin") {
+			console.log("creating signin.tsx..");
+			writeFile(
+				"create signin",
+				"https://raw.githubusercontent.com/Chensokheng/supa-auth/master/components/auth/signin.tsx",
+				getWriteComponentPath("signin")
+			);
+		} else {
+			console.log("no component");
 		}
 	});
 

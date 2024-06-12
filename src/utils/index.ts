@@ -1,4 +1,4 @@
-import fs, { write } from "fs";
+import fs from "fs";
 import * as https from "https";
 import { spawn } from "child_process";
 
@@ -10,6 +10,28 @@ export function getWriteComponentPath(component: string) {
 	} else {
 		return "./components/supaauth/" + component + ".tsx";
 	}
+}
+
+export function createFolderAndFile(
+	url: string,
+	folderPath: string,
+	fileName: string,
+	isRoot?: boolean
+) {
+	let path = "";
+	if (isRoot) {
+		fs.mkdirSync(folderPath, { recursive: true });
+
+		path = folderPath + "/" + fileName;
+	} else if (fs.existsSync("./src")) {
+		fs.mkdirSync("./src/" + folderPath, { recursive: true });
+		path = "./src/" + folderPath + "/" + fileName;
+	} else {
+		fs.mkdirSync("./" + folderPath, { recursive: true });
+		path = "./" + folderPath + "/" + fileName;
+	}
+
+	writeFile(fileName, url, path);
 }
 
 export function writeFile(action: string, url: string, path: string) {
@@ -34,6 +56,31 @@ export function writeFile(action: string, url: string, path: string) {
 		});
 }
 
+function createEnvFile() {
+	https
+		.get(
+			"https://raw.githubusercontent.com/Chensokheng/supa-auth/master/.env.sample",
+			(response) => {
+				let data = "";
+
+				response.on("data", (chunk) => {
+					data += chunk;
+				});
+
+				response.on("end", () => {
+					try {
+						fs.appendFileSync(".env.local", data, "utf8");
+					} catch (err) {
+						console.error(`Error appending data to file: ${err}`);
+					}
+				});
+			}
+		)
+		.on("error", (err) => {
+			console.error("Fail to create " + ".env.local", err);
+		});
+}
+
 export function initSupabase() {
 	console.log("Init Supabase...");
 	let path = fs.existsSync("./src/lib/supabase")
@@ -52,14 +99,12 @@ export function initSupabase() {
 		}
 	}
 
-	const data =
-		"NEXT_PUBLIC_SUPABASE_URL=<your_supabase_project_url>\nNEXT_PUBLIC_SUPABASE_ANON_KEY=<your_supabase_anon_key>\n";
-
-	try {
-		fs.appendFileSync(".env.local", data, "utf8");
-	} catch (err) {
-		console.error(`Error appending data to file: ${err}`);
-	}
+	createFolderAndFile(
+		"https://raw.githubusercontent.com/Chensokheng/supa-auth/master/lib/constants/index.ts",
+		"lib/constants",
+		"index.ts"
+	);
+	createEnvFile();
 	writeFile(
 		"supabase browser",
 		"https://raw.githubusercontent.com/Chensokheng/supa-auth/master/lib/supabase/client.ts",
@@ -70,12 +115,21 @@ export function initSupabase() {
 		"https://raw.githubusercontent.com/Chensokheng/supa-auth/master/lib/supabase/server.ts",
 		path + "/server.ts"
 	);
+	writeFile(
+		"middlware",
+		"https://raw.githubusercontent.com/Chensokheng/supa-auth/master/lib/supabase/middleware.ts",
+		path + "/middleware.ts"
+	);
+	writeFile(
+		"middlware",
+		"https://raw.githubusercontent.com/Chensokheng/supa-auth/master/lib/supabase/admin.ts",
+		path + "/admin.ts"
+	);
 
 	const child = spawn("npm install @supabase/supabase-js @supabase/ssr", {
 		stdio: "inherit",
 		shell: true,
 	});
 
-	// Handle child process exit
 	child.on("close", (code) => {});
 }

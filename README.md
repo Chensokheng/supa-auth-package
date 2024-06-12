@@ -33,3 +33,7 @@ Visit https://www.youtube.com/@DailyWebCoding to view the documentation.
 
 License
 Licensed under the MIT license.
+
+[] shadn
+[] create supaauth folder
+[] create supabase init middleware,admin,server,client
