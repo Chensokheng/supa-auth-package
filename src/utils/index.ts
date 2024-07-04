@@ -2,13 +2,16 @@ import fs from "fs";
 import * as https from "https";
 import { spawn } from "child_process";
 
-export function getWriteComponentPath(component: string) {
+export function getWriteComponentPath(
+	component: string,
+	defaultPath = "supaauth/"
+) {
 	const path = "./src";
 
 	if (fs.existsSync(path)) {
-		return "./src/components/supaauth/" + component + ".tsx";
+		return "./src/components" + defaultPath + component + ".tsx";
 	} else {
-		return "./components/supaauth/" + component + ".tsx";
+		return "./components/" + defaultPath + component + ".tsx";
 	}
 }
 

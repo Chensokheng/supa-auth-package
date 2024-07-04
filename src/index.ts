@@ -125,6 +125,54 @@ program
 				"https://raw.githubusercontent.com/Chensokheng/supa-auth/master/components/auth/signin.tsx",
 				getWriteComponentPath("signin")
 			);
+		} else if (options.component === "user-profile") {
+			console.log(
+				"creating user-profile.tsx, avatar.tsx, manage-profile.tsx,query-provider.tsx"
+			);
+			writeFile(
+				"create user-profile",
+				"https://raw.githubusercontent.com/Chensokheng/supa-auth/master/components/auth/user-profile.tsx",
+				getWriteComponentPath("user-profile")
+			);
+			writeFile(
+				"create avatar",
+				"https://raw.githubusercontent.com/Chensokheng/supa-auth/master/components/auth/avatar.tsx",
+				getWriteComponentPath("avatar")
+			);
+			writeFile(
+				"create manage-profile",
+				"https://raw.githubusercontent.com/Chensokheng/supa-auth/master/components/auth/manage-profile.tsx",
+				getWriteComponentPath("manage-profile")
+			);
+			writeFile(
+				"create query-provider",
+				"https://raw.githubusercontent.com/Chensokheng/supa-auth/master/components/query-provider.tsx",
+				getWriteComponentPath("query-provider", "")
+			);
+			createFolderAndFile(
+				"https://raw.githubusercontent.com/Chensokheng/supa-auth/master/app/hook/useUser.ts",
+				"app/hook",
+				"useUser.tsx"
+			);
+
+			createFolderAndFile(
+				"https://raw.githubusercontent.com/Chensokheng/supa-auth/master/components/ui/dialog.tsx",
+				"components/ui",
+				"dialog.tsx"
+			);
+			console.log(
+				"npx shadcn-ui@latest add popover\nnpm i @tanstack/react-query @tanstack/react-query-devtools @radix-ui/react-dialog"
+			);
+			const child = spawn(
+				"npx shadcn-ui@latest add popover && npm i @tanstack/react-query @tanstack/react-query-devtools @radix-ui/react-dialog",
+				{
+					stdio: "inherit",
+					shell: true,
+				}
+			);
+			child.on("close", (code) => {});
+
+			// create hook file
 		} else {
 			console.log("no component");
 		}
